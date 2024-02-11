@@ -57,7 +57,7 @@ class CustomMainWindow(QMainWindow):
         toolbar.addAction(goals_action)
         toolbar.addAction(calendar_action)
         
-        toolbar_font = QFont("Arial", 16, 2, False)
+        toolbar_font = QFont("Arial", 32, 2, False)
         toolbar_font.setBold(True)
         toolbar.setFont(toolbar_font)
         

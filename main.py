@@ -1,7 +1,5 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from main_window import *
+from PyQt5.QtWidgets import QApplication
+from main_window import CustomMainWindow
 
 import sys
 
