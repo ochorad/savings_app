@@ -19,11 +19,11 @@ class AddIncomeDialog(QDialog):
         date_label = QLabel("Income Date")
         type_label = QLabel("Income Type")
         
-        self.amount_line_text_edit = QDoubleSpinBox(form_widget)
-        self.amount_line_text_edit.setPrefix("$ ")
-        self.amount_line_text_edit.setRange(0.00, 999999.99)
-        self.amount_line_text_edit.setDecimals(2)
-        self.amount_line_text_edit.valueChanged.connect(lambda: self.double_spin_box_changed())
+        self.amount_double_spin_box = QDoubleSpinBox(form_widget)
+        self.amount_double_spin_box.setPrefix("$ ")
+        self.amount_double_spin_box.setRange(0.00, 999999.99)
+        self.amount_double_spin_box.setDecimals(2)
+        self.amount_double_spin_box.valueChanged.connect(lambda: self.double_spin_box_changed())
         
         self.date_edit = QDateEdit(form_widget)
         current_day = QDate(QDate.currentDate())
@@ -34,7 +34,7 @@ class AddIncomeDialog(QDialog):
         self.type_line_text_edit.setPlaceholderText("Enter Income Type")
         self.type_line_text_edit.textChanged.connect(lambda: self.type_line_edit_changed())
         
-        form_layout.addRow(amount_label, self.amount_line_text_edit)
+        form_layout.addRow(amount_label, self.amount_double_spin_box)
         form_layout.addRow(date_label, self.date_edit)
         form_layout.addRow(type_label, self.type_line_text_edit)        
         
@@ -46,11 +46,10 @@ class AddIncomeDialog(QDialog):
         cancel_button.clicked.connect(self.reject)
         grid_layout.addWidget(cancel_button, 1, 1)
         
-        
-        self.accept_button.setDisabled(False)
+        self.check_if_valid()
         
     def check_if_valid(self):
-        if self.amount_line_text_edit.text() == "0.00" or self.type_line_text_edit.text() == "":
+        if self.amount_double_spin_box.value() == 0.00 or self.type_line_text_edit.text() == "":
             self.accept_button.setDisabled(True)
         else:
             self.accept_button.setDisabled(False)
@@ -63,7 +62,7 @@ class AddIncomeDialog(QDialog):
         
     def get_data(self):
         return {
-            '$ Amount': self.amount_line_text_edit.text(),
-            'Date': self.date_edit.text(),
+            '$ Amount': self.amount_double_spin_box.value(),
+            'Date': self.date_edit.date(),
             'Income Type': self.type_line_text_edit.text()
         }

@@ -1,6 +1,7 @@
 from widgets.dialogs.add_income_dialog import AddIncomeDialog
-from PyQt5.QtWidgets import QAbstractItemView, QVBoxLayout, QHBoxLayout, QWidget, QTableWidget, QPushButton, QTableWidgetItem, QGridLayout, QSpacerItem, QHeaderView
+from PyQt5.QtWidgets import QDoubleSpinBox, QAbstractItemView, QVBoxLayout, QHBoxLayout, QWidget, QTableWidget, QPushButton, QTableWidgetItem, QGridLayout, QSpacerItem, QHeaderView
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 
 class IncomeWidget(QWidget):
     def __init__(self):
@@ -30,6 +31,7 @@ class IncomeWidget(QWidget):
         add_push_button.clicked.connect(self.open_add_income_dialog)
         add_push_button.setFont(QFont("Arial", 16, 2, False))
         remove_push_button = QPushButton("Remove")
+        remove_push_button.clicked.connect(self.remove_button_clicked)
         cancel_push_button = QPushButton("Cancel Recurring") #Need to do after calendar is implemented
         
         bottom_grid_layout.addWidget(add_push_button, 0, 0, 0, 1)
@@ -53,6 +55,9 @@ class IncomeWidget(QWidget):
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        
+        self.table_widget.setSortingEnabled(True)
+        self.table_widget.verticalHeader().hide()
     
     def open_add_income_dialog(self):
         income_dialog_box = AddIncomeDialog(self)
@@ -62,9 +67,22 @@ class IncomeWidget(QWidget):
             data = income_dialog_box.get_data()
             self.update_data_list(data)
         
+    def remove_button_clicked(self): 
+        self.table_widget.removeRow(self.table_widget.currentRow())
+                
     def update_data_list(self, data):
+        self.table_widget.setSortingEnabled(False)        
         self.table_widget.setRowCount(self.table_widget.rowCount() + 1)
         print(self.table_widget.rowCount())
-        self.table_widget.setItem(self.table_widget.rowCount() - 1, 0, QTableWidgetItem(str(data['$ Amount']), 0))
-        self.table_widget.setItem(self.table_widget.rowCount() - 1, 1, QTableWidgetItem(str(data['Date']), 0))
+        
+        amount_item = QTableWidgetItem()
+        amount_item.setData(Qt.ItemDataRole.DisplayRole, data['$ Amount'])
+        self.table_widget.setItem(self.table_widget.rowCount() - 1, 0, amount_item)
+        
+        date_item = QTableWidgetItem()
+        date_item.setData(Qt.ItemDataRole.DisplayRole, data['Date'])
+        self.table_widget.setItem(self.table_widget.rowCount() - 1, 1, date_item)
+        
         self.table_widget.setItem(self.table_widget.rowCount() - 1, 2, QTableWidgetItem(str(data['Income Type']), 0))
+        self.table_widget.setSortingEnabled(True)
+
