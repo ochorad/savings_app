@@ -1,5 +1,5 @@
 from widgets.dialogs.add_income_dialog import AddIncomeDialog
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QWidget, QTableWidget, QPushButton, QTableWidgetItem, QGridLayout, QSpacerItem, QHeaderView
+from PyQt5.QtWidgets import QAbstractItemView, QVBoxLayout, QHBoxLayout, QWidget, QTableWidget, QPushButton, QTableWidgetItem, QGridLayout, QSpacerItem, QHeaderView
 from PyQt5.QtGui import QFont
 
 class IncomeWidget(QWidget):
@@ -39,6 +39,9 @@ class IncomeWidget(QWidget):
     
     def make_table_widget(self):
         self.table_widget = QTableWidget(0,3)
+        self.table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        
         dollar_amount_column_header = QTableWidgetItem("$ Amount")
         date_column_header = QTableWidgetItem("Date")
         type_column_header = QTableWidgetItem("Income Type")
@@ -54,7 +57,7 @@ class IncomeWidget(QWidget):
     def open_add_income_dialog(self):
         income_dialog_box = AddIncomeDialog(self)
 
-        if income_dialog_box.exec() == QDialog.accepted:
+        if income_dialog_box.exec_() == 1: # 1=accepted
             print("Accepted")
             data = income_dialog_box.get_data()
             self.update_data_list(data)
@@ -62,6 +65,6 @@ class IncomeWidget(QWidget):
     def update_data_list(self, data):
         self.table_widget.setRowCount(self.table_widget.rowCount() + 1)
         print(self.table_widget.rowCount())
-        self.table_widget.setitem(self.table_widget.rowCount() + 1, 0, QTableWidgetItem((data['$ Amount'])))
-        self.table_widget.setitem(self.table_widget.rowCount() + 1, 1, QTableWidgetItem((data['Date'])))
-        self.table_widget.setitem(self.table_widget.rowCount() + 1, 2, QTableWidgetItem((data['Income Type'])))
+        self.table_widget.setItem(self.table_widget.rowCount() - 1, 0, QTableWidgetItem(str(data['$ Amount']), 0))
+        self.table_widget.setItem(self.table_widget.rowCount() - 1, 1, QTableWidgetItem(str(data['Date']), 0))
+        self.table_widget.setItem(self.table_widget.rowCount() - 1, 2, QTableWidgetItem(str(data['Income Type']), 0))
