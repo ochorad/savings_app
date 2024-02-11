@@ -1,11 +1,11 @@
 #import python
 import sys
 #import widgets
-from dashboard_widget import DashboardWidget
-from income_widget import IncomeWidget
-from expenses_widget import ExpensesWidget
-from goals_widget import GoalsWidget
-from calendar_widget import CalendarWidget
+from widgets.dashboard_widget import DashboardWidget
+from widgets.income_widget import IncomeWidget
+from widgets.expenses_widget import ExpensesWidget
+from widgets.goals_widget import GoalsWidget
+from widgets.calendar_widget import CalendarWidget
 #import qt stuff
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QStackedWidget, QPushButton, QToolBar, QAction
 from PyQt5.QtGui import QFont
