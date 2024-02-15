@@ -1,5 +1,5 @@
 from widgets.dialogs.add_income_dialog import AddIncomeDialog
-from PyQt5.QtWidgets import QDoubleSpinBox, QAbstractItemView, QVBoxLayout, QHBoxLayout, QWidget, QTableWidget, QPushButton, QTableWidgetItem, QGridLayout, QSpacerItem, QHeaderView
+from PyQt5.QtWidgets import QLabel, QAbstractItemView, QVBoxLayout, QHBoxLayout, QWidget, QTableWidget, QPushButton, QTableWidgetItem, QGridLayout, QSpacerItem, QHeaderView
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 
@@ -18,8 +18,11 @@ class IncomeWidget(QWidget):
         
         v_layout = QVBoxLayout()
         v_box_layout_widget.setLayout(v_layout)
-        v_layout.addSpacerItem(QSpacerItem(10, 25))
+        
+        income_label = QLabel("Income")
+        income_label.setFont(QFont("Arial", 25, 2, False))
 
+        v_layout.addWidget(income_label, 0, Qt.AlignmentFlag.AlignCenter)
         v_layout.addWidget(self.table_widget)
         
         push_buttons_widget = QWidget()
